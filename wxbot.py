@@ -12,6 +12,8 @@ import random
 from requests.exceptions import *
 import webbrowser
 import HTMLParser
+import sys
+import subprocess
 
 UNKONWN = 'unkonwn'
 SUCCESS = '200'
@@ -720,7 +722,10 @@ class WXBot:
         qr = pyqrcode.create(string)
         if self.conf['qr'] == 'png':
             qr.png(qr_file_path, scale=8)
-            webbrowser.open(qr_file_path)
+            if sys.platform.find('darwin') >= 0:
+                subprocess.call(['open', qr_file_path])
+            else:
+                webbrowser.open(qr_file_path)
         elif self.conf['qr'] == 'tty':
             print(qr.terminal(quiet_zone=1))
 
