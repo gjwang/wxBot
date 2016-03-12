@@ -9,8 +9,8 @@ import urllib
 import time
 import re
 import random
-from requests.exceptions import ConnectionError, ReadTimeout
-import os
+from requests.exceptions import *
+import webbrowser
 import HTMLParser
 
 UNKONWN = 'unkonwn'
@@ -632,7 +632,7 @@ class WXBot:
                 return contact['UserName']
         return ''
 
-    def send_msg(self, name, word, isfile=False):
+    def send_msg(self, name, word, isfile = False):
         uid = self.get_user_id(name)
         if uid:
             if isfile:
@@ -672,13 +672,13 @@ class WXBot:
     def run(self):
         self.get_uuid()
         self.gen_qr_code('qr.png')
-        print '[INFO] Please use WeChat to scan the QR code .'
-        
+        print '[INFO] Please use WeCaht to scan the QR code .'
+
         result = self.wait4login()
         if result != SUCCESS:
-            print '[ERROR] Web WeChat login failed. failed code=%s'%(result, )
+            print '[ERROR] Web WeChat login failed. failed code=result'%(result, )
             return
-        
+
         if self.login():
             print '[INFO] Web WeChat login succeed .'
         else:
@@ -720,7 +720,7 @@ class WXBot:
         qr = pyqrcode.create(string)
         if self.conf['qr'] == 'png':
             qr.png(qr_file_path, scale=8)
-            os.startfile(qr_file_path)
+            webbrowser.open(qr_file_path)
         elif self.conf['qr'] == 'tty':
             print(qr.terminal(quiet_zone=1))
 
